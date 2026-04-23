@@ -91,7 +91,3 @@ ComplexIntegrationWebsite/
 - Add export options for plots and results
 - Add support for domain coloring
 - Add a step-by-step derivation panel for symbolic results
-
-## License
-
-Add your preferred license before publishing to GitHub.
