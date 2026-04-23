@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complex Integration Studio</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Complex Analysis Workbench</p>
+          <h1>Plot a complex function in 3D and evaluate its contour integral.</h1>
+          <p class="lede">
+            Enter <code>f(z)</code>, define a contour <code>z(t)</code>, choose which surface to render, and the
+            app will compute the integral <code>\u222b f(z) dz</code> along that path.
+          </p>
+        </div>
+        <div class="hero-card">
+          <div class="hero-stat">
+            <span>Plot Surface</span>
+            <strong>|f(z)|, Re(f), Im(f)</strong>
+          </div>
+          <div class="hero-stat">
+            <span>Integral Engine</span>
+            <strong>Symbolic attempt + numeric fallback</strong>
+          </div>
+          <div class="hero-stat">
+            <span>Contour Input</span>
+            <strong>Parameterized by t</strong>
+          </div>
+        </div>
+      </section>
+
+      <main class="workspace">
+        <section class="panel form-panel">
+          <div class="panel-heading">
+            <h2>Inputs</h2>
+            <p>Use <code>i</code> for the imaginary unit and <code>^</code> for powers.</p>
+          </div>
+
+          <div class="examples">
+            <button class="example-chip" type="button" data-example="residue">
+              Residue Demo
+            </button>
+            <button class="example-chip" type="button" data-example="gaussian">
+              Gaussian Loop
+            </button>
+            <button class="example-chip" type="button" data-example="pole">
+              Rational Surface
+            </button>
+          </div>
+
+          <form id="analysis-form">
+            <label>
+              Function f(z)
+              <input id="function" name="function" value="1 / z" />
+            </label>
+
+            <label>
+              Contour z(t)
+              <input id="contour" name="contour" value="exp(i*t)" />
+            </label>
+
+            <div class="two-up">
+              <label>
+                t min
+                <input id="t_min" name="t_min" value="0" />
+              </label>
+              <label>
+                t max
+                <input id="t_max" name="t_max" value="2*pi" />
+              </label>
+            </div>
+
+            <label>
+              Surface Component
+              <select id="component" name="component">
+                <option value="abs" selected>|f(z)|</option>
+                <option value="real">Re(f(z))</option>
+                <option value="imag">Im(f(z))</option>
+              </select>
+            </label>
+
+            <div class="range-grid">
+              <label>
+                x min
+                <input id="x_min" name="x_min" type="number" step="0.5" value="-3" />
+              </label>
+              <label>
+                x max
+                <input id="x_max" name="x_max" type="number" step="0.5" value="3" />
+              </label>
+              <label>
+                y min
+                <input id="y_min" name="y_min" type="number" step="0.5" value="-3" />
+              </label>
+              <label>
+                y max
+                <input id="y_max" name="y_max" type="number" step="0.5" value="3" />
+              </label>
+              <label>
+                Resolution
+                <input id="resolution" name="resolution" type="number" step="1" value="81" min="31" max="161" />
+              </label>
+              <label>
+                Integral Samples
+                <input
+                  id="integral_samples"
+                  name="integral_samples"
+                  type="number"
+                  step="100"
+                  value="4000"
+                  min="600"
+                  max="12000"
+                />
+              </label>
+            </div>
+
+            <button id="submit-button" class="primary-button" type="submit">Analyze Function</button>
+          </form>
+        </section>
+
+        <section class="panel output-panel">
+          <div class="panel-heading">
+            <h2>Results</h2>
+            <p id="status-text">Ready.</p>
+          </div>
+
+          <div class="result-cards">
+            <article class="result-card">
+              <span>Symbolic Integral</span>
+              <strong id="symbolic-result">Waiting for input</strong>
+            </article>
+            <article class="result-card">
+              <span>Numeric Integral</span>
+              <strong id="numeric-result">Waiting for input</strong>
+            </article>
+            <article class="result-card">
+              <span>Polar Form</span>
+              <strong id="polar-result">Waiting for input</strong>
+            </article>
+          </div>
+
+          <div class="detail-grid">
+            <article class="detail-card">
+              <h3>Parsed Function</h3>
+              <p id="parsed-function">-</p>
+            </article>
+            <article class="detail-card">
+              <h3>Contour</h3>
+              <p id="parsed-contour">-</p>
+            </article>
+            <article class="detail-card">
+              <h3>Integrand</h3>
+              <p id="integrand-display">-</p>
+            </article>
+            <article class="detail-card">
+              <h3>Magnitude</h3>
+              <p id="magnitude-display">-</p>
+            </article>
+          </div>
+
+          <div id="plot" class="plot-frame"></div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
